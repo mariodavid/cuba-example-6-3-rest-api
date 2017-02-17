@@ -1,0 +1,129 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CUBA REST API v2",
+		"_postman_id": "a5678307-f226-0a10-ffca-63c1f08a14f2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"if (isResponseOk()) {",
+							"",
+							"    var jsonData = getJson();",
+							"    ",
+							"    var noErrorInBody = !('error' in jsonData);",
+							"    tests[\"No error in JSON response\"] = noErrorInBody;",
+							"    ",
+							"    if (noErrorInBody) {",
+							"",
+							"        var access_token = jsonData.access_token;",
+							"        var accessTokenInBody = 'access_token' in jsonData;",
+							"        tests[\"Access token received\"] = accessTokenInBody;",
+							"        ",
+							"        postman.setEnvironmentVariable(\"access_token\", access_token);",
+							"",
+							"    }",
+							"}",
+							"",
+							"",
+							"",
+							"//////////////////////////////////////////////////////////////////////////////",
+							"// Helper functions",
+							"//////////////////////////////////////////////////////////////////////////////",
+							"",
+							"function isResponseOk() {",
+							"    isResponseCodeOk = responseCode.code === 200",
+							"    istContentTypeOk = postman.getResponseHeader(\"Content-Type\") == \"application/json;charset=UTF-8\";",
+							"    tests[\"Response is OK\"] = isResponseCodeOk;",
+							"    tests[\"Content-Type is JSON\"] = istContentTypeOk;",
+							"    ",
+							"    return isResponseCodeOk && istContentTypeOk",
+							"}",
+							"",
+							"function getJson() {",
+							"    return JSON.parse(responseBody)",
+							"}",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{baseUrl}}/oauth/token",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic Y2xpZW50OnNlY3JldA==",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get query",
+			"request": {
+				"url": "{{baseUrl}}/queries/cesdra$Customer/customerByType?customerType=NEW",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

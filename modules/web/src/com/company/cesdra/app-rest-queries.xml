@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<queries xmlns="http://schemas.haulmont.com/cuba/rest-queries.xsd">
+    <query name="customerByType" entity="cesdra$Customer" view="customer-view">
+        <jpql><![CDATA[select c from cesdra$Customer c where c.customerType = :customerType]]></jpql>
+        <params>
+            <param name="customerType" type="java.lang.String"/>
+        </params>
+    </query>
+</queries>
